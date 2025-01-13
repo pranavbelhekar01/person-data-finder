@@ -1,6 +1,7 @@
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
+from scrappers.contactout import search_profiles
 load_dotenv()
 
 API_KEY = os.getenv("SECRET_OPENAI_API")
@@ -15,26 +16,32 @@ llm = ChatOpenAI(
     max_tokens=None,
     timeout=None,
     max_retries=2,
-    api_key=API_KEY,  # if you prefer to pass api key in directly instaed of using env vars
+    api_key=API_KEY,  
 )
 
+def get_info(query):
 
-prompt = ChatPromptTemplate.from_messages(
-    [
-        (
-            "system",
-            "You are a helpful assistant that translates {input_language} to {output_language}.",
-        ),
-        ("human", "{input}"),
-    ]
-)
+    information = search_profiles(query)
 
-chain = prompt | llm
-response = chain.invoke(
-    {
-        "input_language": "English",
-        "output_language": "German",
-        "input": "I love programming.",
-    }
-)
-print(response.content)
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            (
+                "system",
+                "You are a helpful assistant that translates {input_language} to {output_language}.",
+            ),
+            ("human", "{input}"),
+        ]
+    )
+
+    chain = prompt | llm
+    response = chain.invoke(
+        {
+            "input_language": "English",
+            "output_language": "German",
+            "input": information,
+        }
+    )
+
+
+if __name__ == "__main__":
+    pass

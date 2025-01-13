@@ -1,7 +1,12 @@
 import requests
 import json
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-def search_profiles(api_token, search_params):
+CONTACT_KEY = os.getenv("CONTACTOUT_KEY")
+
+def search_profiles(query):
     """
     Search for profiles using the ContactOut People Search API.
 
@@ -9,6 +14,12 @@ def search_profiles(api_token, search_params):
     :param search_params: A dictionary containing the search parameters.
     :return: The JSON response from the API or an error message.
     """
+    api_token = CONTACT_KEY
+    search_params = {
+        "page": 1,
+        "name": query,
+        "reveal_info": True
+    }
     url = "https://api.contactout.com/v1/people/search"
     headers = {
         "Content-Type": "application/json",
@@ -24,21 +35,24 @@ def search_profiles(api_token, search_params):
             return {"error": f"HTTP {response.status_code}: {response.text}"}
 
         # Return the JSON response
-        return response.json()
+
+        data = response.json()
+        contact_data = json.dumps(data)
+        return contact_data
 
     except requests.exceptions.RequestException as e:
         return {"error": str(e)}
 
-# Example Usage
-if __name__ == "__main__":
-    api_token = "LsFIEKnY5u5TbtvGHLEQ9xSQ"
-    search_params = {
-        "page": 1,
-        "name": "Galen Massey",
-        "reveal_info": True
-    }
-
-    result = search_profiles(api_token, search_params)
+# # Example Usage
+# if __name__ == "__main__":
     
-    # Print formatted JSON response
-    print(json.dumps(result, indent=4))
+    # search_params = {
+    #     "page": 1,
+    #     "name": "Galen Massey",
+    #     "reveal_info": True
+    # }
+
+#     result = search_profiles(search_params)
+    
+#     # Print formatted JSON response
+#     print(json.dumps(result, indent=4))
