@@ -1,21 +1,40 @@
-from langchain_core.tools import Tool
-from langchain_google_community import GoogleSearchAPIWrapper
+import requests
 from dotenv import load_dotenv
 load_dotenv()
 import os
 
-os.environ["GOOGLE_CSE_ID"] = os.getenv("GOOGLE_CX")
-os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
+API = os.getenv("GOOGLE_API_KEY")
+CX_ID = os.getenv("GOOGLE_CX")
+
+def google_search(query):
+    api_key = API  
+    cx = CX_ID     
+
+    url = f'https://www.googleapis.com/customsearch/v1?key={api_key}&cx={cx}&q="{query}"'
+    response = requests.get(url)
+    results = response.json()
+    items = results.get('items', [])
+
+    urls = []
+    snippets = []
+
+    for item in items:
+        link = item.get('link', 'N/A')
+        snippet = item.get('snippet', 'N/A')
+        urls.append(link)
+        snippets.append(snippet)
+
+    # Create a JSON object zipping URLs with snippets
+    zipped_results = [
+        {"url": url, "snippet": snippet} for url, snippet in zip(urls, snippets)
+    ]
+
+    return zipped_results
 
 
-
-search = GoogleSearchAPIWrapper()
-
-tool = Tool(
-    name="google_search",
-    description="Search Google for recent results.",
-    func=search.run,
-)
-
-result = tool.run('"Galen Massey"')
-print(result)
+if __name__ == "__main__":
+    result = google_search("Galen Massey")
+    print(result)
+    print("Length of result:: ", len(result))
+    print(f'Type of result:: {type(result)}')
+    
