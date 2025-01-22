@@ -10,7 +10,7 @@ def google_search(query):
     api_key = API  
     cx = CX_ID     
 
-    url = f'https://www.googleapis.com/customsearch/v1?key={api_key}&cx={cx}&q="{query}"'
+    url = f'https://www.googleapis.com/customsearch/v1?key={api_key}&cx={cx}&q={query}'
     response = requests.get(url)
     results = response.json()
     items = results.get('items', [])
@@ -32,9 +32,9 @@ def google_search(query):
     return zipped_results
 
 
-if __name__ == "__main__":
-    result = google_search("Galen Massey")
-    print(result)
-    print("Length of result:: ", len(result))
-    print(f'Type of result:: {type(result)}')
+# if __name__ == "__main__":
+#     result = google_search("Galen Massey")
+#     print(result)
+#     print("Length of result:: ", len(result))
+#     print(f'Type of result:: {type(result)}')
     

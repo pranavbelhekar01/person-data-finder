@@ -25,7 +25,7 @@ llm = ChatOpenAI(
     api_key=API_KEY,  
 )
 
-def get_info(information):
+def get_info(name, information):
 
     prompt = ChatPromptTemplate.from_messages(
         [
@@ -33,40 +33,49 @@ def get_info(information):
                 "system",
                 agent_prompt,
             ),
-            ("human", "{contact_data}"),
+            # ("human", "{data}"),
         ]
     )
 
     chain = prompt | llm
     response = chain.invoke(
         {
-            "contact_data": information,
+            "name": name,
+            "data": information,
+            
         }
     )
+
     return response.content
 
 
 
-def get_data(name, api_key = PERSON_API_KEY, city=None, state_code=None, street_line_1=None, street_line_2=None, postal_code=None, country_code=None):
+def get_data(name, api_key = PERSON_API_KEY, city=None, state_code=None, street_line_1=None, street_line_2=None, postal_code=None, country_code=None, other_info=None):
     person_information = find_person(name, api_key, city, state_code, street_line_1, street_line_2, postal_code, country_code)
-    google_information = google_search(name)
+    if other_info:
+        google_query = f'"{name}" {other_info}'
+        google_information = google_search(google_query)
+    else:
+        google_query = f'"{name}"'
+        google_information = google_search(google_query)
+
     information = {
         "person_information": person_information,
         "google_information": google_information
     }
     information_string = json.dumps(information)
-    llm_response = get_info(information_string)
+    llm_response = get_info(name, information_string)
     
     return llm_response
 
 
-if __name__ == "__main__":
-    name = ""
-    city = ""
-    state_code = ""
-    street_line_1 = ""
-    street_line_2 = ""
-    postal_code = ""
-    flag = True
+# if __name__ == "__main__":
+#     name = ""
+#     city = ""
+#     state_code = ""
+#     street_line_1 = ""
+#     street_line_2 = ""
+#     postal_code = ""
+#     flag = True
 
-    pass
+#     pass
