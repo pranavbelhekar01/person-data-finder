@@ -59,4 +59,6 @@ if __name__ == "__main__":
     street_line_1 = ""
     street_line_2 = ""
     postal_code = ""
+    flag = True
+
     pass
