@@ -39,8 +39,6 @@ def get_info(information):
     chain = prompt | llm
     response = chain.invoke(
         {
-            "input_language": "English",
-            "output_language": "German",
             "contact_data": information,
         }
     )
@@ -55,5 +53,10 @@ def get_data(name, api_key = PERSON_API_KEY, city=None, state_code=None, street_
 
 
 if __name__ == "__main__":
-
+    name = ""
+    city = ""
+    state_code = ""
+    street_line_1 = ""
+    street_line_2 = ""
+    postal_code = ""
     pass
