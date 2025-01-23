@@ -65,8 +65,8 @@ def find_person(name, api_key = PERSON_API_KEY, city=None, state_code=None, stre
         }
 
 # Example usage
-# if __name__ == "__main__":
-#     API_KEY = PERSON_API_KEY
-#     NAME = "Jon Snow"
-#     result = find_person(api_key = API_KEY, name = NAME, state_code="WA", postal_code="98264", country_code="US")
-#     print(result)
+if __name__ == "__main__":
+    API_KEY = PERSON_API_KEY
+    NAME = "Galen Massey"
+    result = find_person(api_key = API_KEY, name = NAME, postal_code="28206")
+    print(result)

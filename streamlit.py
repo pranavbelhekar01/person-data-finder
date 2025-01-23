@@ -1,5 +1,5 @@
 import streamlit as st
-from main import get_data
+from suppplimentary import get_data
 
 # def get_data(name, postal_code, city=None, state_code=None, street_line_1=None, street_line_2=None, other_info=None):
 #     """
