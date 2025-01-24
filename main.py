@@ -18,7 +18,7 @@ class PersonInfoCrew:
                 PersonInfoTasks.information_retrieval(self.researcher),
                 PersonInfoTasks.format_response(self.researcher)
             ],
-            process=Process.hierarchical,
+            process=Process.sequential,
             manager_llm=config.llm_config,  # REQUIRED for hierarchical process
             verbose=True,
             memory=True

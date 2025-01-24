@@ -8,7 +8,6 @@
       "city": "Huntersville",
       "postal_code": "28078",
       "state_code": "NC",
-      "country_code": "US",
       "lat_long": {
         "latitude": 35.4411,
         "longitude": -80.8844
@@ -20,15 +19,19 @@
       "street_line_1": "4039 Dinglewood Ave",
       "city": "Charlotte",
       "postal_code": "28205",
-      "state_code": "NC",
-      "country_code": "US"
+      "state_code": "NC"
     },
     {
       "street_line_1": "1008 Rockway Dr",
       "city": "Charlotte",
       "postal_code": "28205",
-      "state_code": "NC",
-      "country_code": "US"
+      "state_code": "NC"
+    },
+    {
+      "street_line_1": "PO Box 29531",
+      "city": "Charlotte",
+      "postal_code": "28229",
+      "state_code": "NC"
     }
   ],
   "phones": [
@@ -52,6 +55,9 @@
     },
     {
       "name": "Eurania Jones Massey"
+    },
+    {
+      "name": "Lettie Carder Massey"
     }
   ]
 }
