@@ -13,6 +13,6 @@ class PersonResearchAgent:
             verbose=True,
             memory=True,
             allow_delegation=False,
-            max_iter=5,
+            max_iter=1,
             llm=config.llm_config  # Make sure config is properly imported
         )

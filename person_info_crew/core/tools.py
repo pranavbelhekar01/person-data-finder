@@ -7,6 +7,7 @@ from person_info_crew.config.settings import config
 from person_info_crew.core.memory import memory
 import requests
 from pydantic import BaseModel, Field
+import json
 
 
 class PersonSearchSchema(BaseModel):
@@ -64,17 +65,19 @@ class PersonSearchTool(BaseTool):
             url = "https://api.trestleiq.com/3.1/person"
             headers = {"x-api-key": config.person_api_key}
             
-            address_params = {}
-            if city: address_params["city"] = city
-            if state_code: address_params["state_code"] = state_code
-            if street_line_1: address_params["street_line_1"] = street_line_1
-            if street_line_2: address_params["street_line_2"] = street_line_2
-            if postal_code: address_params["postal_code"] = postal_code
-            if country_code: address_params["country_code"] = country_code
-            
             params = {"name": name}
-            if address_params:
-                params["address"] = address_params
+            if city:
+                params["address.city"] = city
+            if state_code:
+                params["address.state_code"] = state_code
+            if street_line_1:
+                params["address.street_line_1"] = street_line_1
+            if street_line_2:
+                params["address.street_line_2"] = street_line_2
+            if postal_code:
+                params["address.postal_code"] = postal_code
+            if country_code:
+                params["address.country_code"] = country_code
 
             try:
                 response = requests.get(url, headers=headers, params=params)
@@ -131,39 +134,52 @@ class GoogleSearchTool(BaseTool):
                 return [{"error": str(e)}]
         
         return _search(query)
+class ParsedQuerySchema(BaseModel):
+    name: str = Field(..., description="Full name of the person")
+    postal_code: Optional[str] = Field(None, description="Postal code of the address")
+    city: Optional[str] = Field(None, description="City name")
+    state_code: Optional[str] = Field(None, description="State abbreviation")
+    street_line_1: Optional[str] = Field(None, description="First line of street address")
+    street_line_2: Optional[str] = Field(None, description="Second line of street address")
+    country_code: Optional[str] = Field(None, description="2-letter country code")
+    requested_fields: List[str] = Field(["email", "address", "phone"], description="List of fields requested by user")
 
 class QueryParserTool(BaseTool):
-    name: str = Field(
-        default="Query Analyzer",
-        description="Natural language query parser"
-    )
-    description: str = Field(
-        default="Extracts structured parameters from natural language queries",
-        description="Tool functionality description"
-    )
-
-    def _run(self, query: str) -> Dict[str, str]:
-        parser = Agent(
-            role="Query Analyzer",
-            goal="Convert natural language to structured parameters",
-            backstory="Specializes in understanding human language queries",
-            verbose=True,
-            allow_delegation=False
-        )
-        
-        return parser.parse_input(
-            f"""Analyze this query: {query}
-            Extract and return JSON with:
-            - name
-            - postal_code
-            - city
-            - state_code  
-            - street_line_1
-            - street_line_2
-            - country_code
-            - requested_fields"""
-        )
-
+    name: str = "Query Analyzer"
+    description: str = "Extracts structured search parameters from natural language queries"
+    
+    def _run(self, query: str) -> Dict:
+        """Parse natural language query into structured parameters"""
+        try:
+            # Construct the parsing prompt
+            prompt = f"""Analyze this query and extract parameters:
+            {query}
+            
+            Return JSON with exactly these fields:
+            {json.dumps(ParsedQuerySchema.schema(), indent=2)}
+            
+            Example:
+            {{
+                "name": "John Doe",
+                "postal_code": "90210",
+                "requested_fields": ["email", "phone"]
+            }}"""
+            
+            # Get structured response from LLM
+            response = config.llm_config.generate(
+                prompt=prompt,
+                temperature=0,
+                max_tokens=200
+            )
+            
+            # Validate and parse the response
+            parsed = json.loads(response)
+            return ParsedQuerySchema(**parsed).dict()
+            
+        except json.JSONDecodeError:
+            return {"error": "Failed to parse LLM response as JSON"}
+        except Exception as e:
+            return {"error": f"Query analysis failed: {str(e)}"}
 # Tool list initialization
 person_search_tools = [
     PersonSearchTool(),

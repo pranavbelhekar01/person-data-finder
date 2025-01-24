@@ -1,5 +1,6 @@
 import os
 from crewai import LLM
+import litellm
 
 class Settings:
     @property
@@ -19,6 +20,7 @@ class Settings:
     
     @property
     def llm_config(self):
+        litellm.set_verbose = True
         return LLM(
             model="gpt-4o-mini",
             api_key=os.getenv("SECRET_OPENAI_API"),
@@ -28,6 +30,7 @@ class Settings:
             frequency_penalty=0,
             presence_penalty=0,
             timeout=30,
-            max_retries=2
+            max_retries=2,
+            
         )
 config = Settings()

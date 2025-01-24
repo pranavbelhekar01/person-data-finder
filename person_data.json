@@ -1,0 +1,57 @@
+{
+  "name": "Galen Eric Massey",
+  "age_range": "56-60",
+  "gender": "M",
+  "current_addresses": [
+    {
+      "street_line_1": "8300 Streamview Dr Apt E",
+      "city": "Huntersville",
+      "postal_code": "28078",
+      "state_code": "NC",
+      "country_code": "US",
+      "lat_long": {
+        "latitude": 35.4411,
+        "longitude": -80.8844
+      }
+    }
+  ],
+  "historical_addresses": [
+    {
+      "street_line_1": "4039 Dinglewood Ave",
+      "city": "Charlotte",
+      "postal_code": "28205",
+      "state_code": "NC",
+      "country_code": "US"
+    },
+    {
+      "street_line_1": "1008 Rockway Dr",
+      "city": "Charlotte",
+      "postal_code": "28205",
+      "state_code": "NC",
+      "country_code": "US"
+    }
+  ],
+  "phones": [
+    {
+      "phone_number": "+17045375708",
+      "line_type": "Landline"
+    },
+    {
+      "phone_number": "+17046152307",
+      "line_type": "Mobile"
+    }
+  ],
+  "emails": [
+    "galenmassey@yahoo.com",
+    "galenmassey@adelphia.com",
+    "galenmassey@aol.com"
+  ],
+  "associated_people": [
+    {
+      "name": "Bethanie Ann Capell"
+    },
+    {
+      "name": "Eurania Jones Massey"
+    }
+  ]
+}

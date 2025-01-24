@@ -35,8 +35,8 @@ if __name__ == "__main__":
     # Example conversation flow
     queries = [
         "Find contact info for Galen massey in 28078",
-        "What's his email address?",
-        "Any phone numbers associated with him?"
+        # "What's his email address?",
+        # "Any phone numbers associated with him?"
     ]
     
     for query in queries:
