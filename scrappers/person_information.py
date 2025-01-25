@@ -68,9 +68,3 @@ def find_person(name, api_key=PERSON_API_KEY, city=None, state_code=None, street
             "error": "An error occurred while making the API request.",
             "details": str(e)
         }
-# Example usage
-# if __name__ == "__main__":
-#     API_KEY = PERSON_API_KEY
-#     NAME = "Galen Massey"
-#     result = find_person(api_key = API_KEY, name = NAME, postal_code="28078")
-#     print(result)

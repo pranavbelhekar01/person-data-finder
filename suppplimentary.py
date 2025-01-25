@@ -131,13 +131,3 @@ def get_data(query):
     return llm_response
 
 
-# if __name__ == "__main__":
-#     name = ""
-#     city = ""
-#     state_code = ""
-#     street_line_1 = ""
-#     street_line_2 = ""
-#     postal_code = ""
-#     flag = True
-
-#     pass
