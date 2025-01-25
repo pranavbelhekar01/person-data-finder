@@ -42,3 +42,39 @@ If no relevant information is found:
 "No contact information found for the provided name."
 
 """
+
+extraction_prompt = """
+Extract the following fields from the input text provided in {query} and return a JSON object with **only** the detected fields. Follow these rules strictly:
+
+1. **Required Field**: 
+   - `"name"` (MUST be included if present; validated as a person's full name).
+
+2. **Optional Fields** (include ONLY if detected in the text):
+   - `"city"` (city name), 
+   - `"postal_code"` (postal/zip code, as a string),
+   - `"street_line_1"`, `"street_line_2"` (street address lines),
+   - `"state_code"` (2-letter state/region code, e.g., "CA" for California),
+   - `"country_code"` (2-letter ISO country code, e.g., "US").
+   - `"other_info"` (any other relevant information, e.g., job title, company name).
+
+3. **Formatting Rules**:
+   - Return a JSON object with **no additional text, explanations, or markdown** (e.g., no ```json).
+   - Use **only the exact keys listed above**; omit any keys not explicitly detected.
+   - Ensure all values are **strings** (even numerical values like postal codes).
+   - Do not infer, guess, or hallucinate missing fields. Include a field **only if explicitly mentioned**.
+
+**Example Input**: "John Doe lives at 123 Maple St, Apt 4B, Springfield, IL 62704, USA."
+**Example Output**: 
+{{
+  "name": "John Doe",
+  "street_line_1": "123 Maple St",
+  "street_line_2": "Apt 4B",
+  "city": "Springfield",
+  "state_code": "IL",
+  "postal_code": "62704",
+  "country_code": "US",
+  "other_info": "works at ABC corp"
+}}
+
+Now process this input: {query}
+"""
