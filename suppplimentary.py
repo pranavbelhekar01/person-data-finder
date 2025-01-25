@@ -25,7 +25,7 @@ llm = ChatOpenAI(
     api_key=API_KEY,  
 )
 mini_llm = ChatOpenAI(
-    model="gpt-4o",
+    model="gpt-4o-mini",
     temperature=0,
     max_tokens=None,
     timeout=None,
@@ -69,7 +69,7 @@ def extract_parameters(query):
         ]
     )
 
-    chain = prompt | llm
+    chain = prompt | mini_llm
     response = chain.invoke(
         {
             "query": query,

@@ -2,7 +2,7 @@ import streamlit as st
 from suppplimentary import get_data
 
 def main():
-    st.title("Natural Language Query Interface")
+    st.title(" 🔍 Person Data Finder")
 
     # Input field for natural language query
     query = st.text_input("Enter your query (required)", 
@@ -19,7 +19,17 @@ def main():
             with st.spinner('Processing your query...'):
                 try:
                     response = get_data(query=query.strip())
+
                     st.markdown(f"### Query Results:\n{response}")
+
+                    # Button to download the response as a text file
+                    response_filename = "query_response.txt"
+                    st.download_button(
+                        label="Download Response as TXT",
+                        data=response,
+                        file_name=response_filename,
+                        mime="text/plain"
+                    )
                 except Exception as e:
                     st.error(f"An error occurred: {str(e)}")
 
